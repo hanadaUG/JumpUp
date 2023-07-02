@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Background : MonoBehaviour
+public class Stairs : MonoBehaviour
 {
     private const int Floor = 20;
     private List<Transform> _stairs = new List<Transform>();

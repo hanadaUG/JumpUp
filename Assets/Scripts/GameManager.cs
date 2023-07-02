@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     private GameObject _player;
     private GameObject _camera;
+    private int _count = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
             }
             _player.transform.position = new Vector3(px, py + 1, 0);
             _camera.transform.position = new Vector3(cx, cy + 1, cz);
+            _count++;
         }
         else if (Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
             _player.transform.position = new Vector3(px, py + 1, 0);
             _player.transform.Rotate(0, 0, 180); // キャラクターの向きを変更
             _camera.transform.position = new Vector3(cx, cy + 1, cz);
+            _count++;
         }
     }
 }
