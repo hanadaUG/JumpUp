@@ -1,46 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Background : MonoBehaviour
 {
-    // グリッド
-    [SerializeField] private int height = 20, width = 9, header = 2, footer = 4;
+    private const int Floor = 20;
+    private List<Transform> _stairs = new List<Transform>();
 
-    // グリッドを表現する2次元配列の作成
-    private Transform[,] _grid;
-
-    // 1マス分のスプライト
-    [SerializeField] private Transform emptySprite;
-
+    [SerializeField] private Transform stairSprite;
 
     private void Awake()
     {
-        _grid = new Transform[width, height];
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        CreateGrid();
+        CreateFirstStairs();
     }
 
-    void CreateGrid()
+    private void CreateFirstStairs()
     {
-        if (emptySprite)
+        if (stairSprite)
         {
-            for (int y = 0; y < height - header - footer; y++)
+            // 階段のx座標（初期位置はプレイヤーの位置を原点とする）
+            int x = (int)Mathf.Round(GameObject.Find("Player").transform.position.x);
+
+            List<int> lr = new List<int>() { -1, 1 }; // 階段をランダムに左右に配置するため使用
+
+            for (int y = 0; y < Floor; y++)
             {
-                for (int x = 0; x < width; x++)
-                {
-                    Transform clone = Instantiate(emptySprite, new Vector3(x, y, 0), Quaternion.identity);
-                    clone.transform.parent = transform;
-                }
+                x += lr[Random.Range(0, 2)]; // 0, 1がランダムに選ばれ、x座標を-1か+1する
+
+                // 階段のゲームオブジェクトを生成
+                Transform clone = Instantiate(stairSprite, new Vector3(x, y, 0), Quaternion.identity);
+                clone.SetParent(transform); // Backgroundを親プロジェクトに設定し一つの階層にまとめる
+                _stairs.Add(clone); // 履歴として登録
             }
         }
         else
         {
-            Debug.Log("emptySprite not set!");
+            Debug.Log("Sprite is not set!");
         }
     }
 }
