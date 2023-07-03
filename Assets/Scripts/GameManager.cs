@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             _camera.transform.position = new Vector3(cx, cy + 1, cz);
             _count++;
             _counter.text = _count.ToString();
-            _isGameClear = _count == 20;
+            _isGameClear = _count == _stairs.Floor;
             if(_isGameClear) return;
             _isGameOver = !_stairs.Exists((int)_player.transform.position.x, _count - 1);
         }
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
             _count++;
             _counter.text = _count.ToString();
 
-            _isGameClear = _count == 20;
+            _isGameClear = _count == _stairs.Floor;
             if(_isGameClear) return;
             _isGameOver = !_stairs.Exists((int)_player.transform.position.x, _count - 1);
         }

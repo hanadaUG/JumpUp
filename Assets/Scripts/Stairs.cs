@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public class Stairs : MonoBehaviour
 {
-    private const int Floor = 20;
+    [SerializeField] public int Floor = 20;
     private List<Transform> _stairs = new List<Transform>();
 
     [SerializeField] private Transform stairSprite;
