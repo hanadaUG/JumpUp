@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
             _counter.text = _count.ToString();
             _isGameClear = _count == _stairs.Floor;
             if(_isGameClear) return;
-            _isGameOver = !_stairs.Exists((int)_player.transform.position.x, _count - 1);
+            _isGameOver = !_stairs.Exists((int)_player.transform.position.x, (int)_player.transform.position.y);
         }
         else if (Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -95,11 +95,10 @@ public class GameManager : MonoBehaviour
 
             _isGameClear = _count == _stairs.Floor;
             if(_isGameClear) return;
-            _isGameOver = !_stairs.Exists((int)_player.transform.position.x, _count - 1);
+            _isGameOver = !_stairs.Exists((int)_player.transform.position.x, (int)_player.transform.position.y);
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
-            Debug.Log("Reset!");
             _isGameOver = false;
             _isGameClear = false;
             _gameOver.enabled = false;
