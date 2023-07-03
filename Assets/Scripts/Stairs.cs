@@ -36,12 +36,27 @@ public class Stairs : MonoBehaviour
                 // 階段のゲームオブジェクトを生成
                 Transform clone = Instantiate(stairSprite, new Vector3(x, y, 0), Quaternion.identity);
                 clone.SetParent(transform); // Backgroundを親プロジェクトに設定し一つの階層にまとめる
-                _stairs.Add(clone); // 履歴として登録
+                _stairs.Insert(y, clone); // 履歴として登録
             }
         }
         else
         {
             Debug.Log("Sprite is not set!");
         }
+    }
+
+    public bool Exists(int x, int y)
+    {
+        return (int)_stairs[y].position.x == x;
+    }
+
+    public void Reset()
+    {
+        _stairs = new List<Transform>();
+        foreach ( Transform child in transform )
+        {
+            Destroy(child.gameObject);
+        }
+        CreateFirstStairs();
     }
 }

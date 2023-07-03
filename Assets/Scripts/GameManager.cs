@@ -9,18 +9,37 @@ public class GameManager : MonoBehaviour
     private GameObject _camera;
     private Text _counter;
     private int _count = 0;
+    private Stairs _stairs;
+
+    private bool _isGameOver = false;
+    private bool _isGameClear = false;
+
+    private Text _gameOver;
+    private Text _gameClear;
 
     // Start is called before the first frame update
     void Start()
     {
+        _stairs = GameObject.FindObjectOfType<Stairs>();
         _player = GameObject.Find("Player");
         _camera = GameObject.Find("Main Camera");
         _counter = GameObject.Find("Counter").GetComponent<Text>();
+        _gameOver = GameObject.Find("GameOver").GetComponent<Text>();
+        _gameClear = GameObject.Find("GameClear").GetComponent<Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_isGameClear && !_gameClear.IsActive())
+        {
+            _gameClear.enabled = true;
+        }
+        if (_isGameOver && !_gameOver.IsActive())
+        {
+            _gameOver.enabled = true;
+        }
+
         PlayerInput();
     }
 
@@ -36,7 +55,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-
+            if(_isGameOver || _isGameClear) return;
             if (dir == 0)
             {
                 px -= 1;
@@ -51,9 +70,13 @@ public class GameManager : MonoBehaviour
             _camera.transform.position = new Vector3(cx, cy + 1, cz);
             _count++;
             _counter.text = _count.ToString();
+            _isGameClear = _count == 20;
+            if(_isGameClear) return;
+            _isGameOver = !_stairs.Exists((int)_player.transform.position.x, _count - 1);
         }
         else if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            if(_isGameOver || _isGameClear) return;
             if (dir == 0)
             {
                 px += 1;
@@ -69,6 +92,24 @@ public class GameManager : MonoBehaviour
             _camera.transform.position = new Vector3(cx, cy + 1, cz);
             _count++;
             _counter.text = _count.ToString();
+
+            _isGameClear = _count == 20;
+            if(_isGameClear) return;
+            _isGameOver = !_stairs.Exists((int)_player.transform.position.x, _count - 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Debug.Log("Reset!");
+            _isGameOver = false;
+            _isGameClear = false;
+            _gameOver.enabled = false;
+            _gameClear.enabled = false;
+            _player.transform.position = new Vector3(4, -1, 0);
+            _camera.transform.position = new Vector3(4, 2, -10);
+            _count = 0;
+            _counter.text = _count.ToString();
+            
+            _stairs.Reset();
         }
     }
 }
